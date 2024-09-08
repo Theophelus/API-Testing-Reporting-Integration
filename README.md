@@ -3,5 +3,6 @@ Test reporting is crucial for offering insights into the health, performance, an
 Extent Reports is a powerful tool in this domain, offering rich, interactive reports that detail test executions highlight failures, and track trends over time.
 
 I will be using either of the following REST API:
-1). https://restcountries.com/
-2). https://dummyjson.com/docs/products
+
+1. https://restcountries.com/
+2. https://dummyjson.com/docs/products
