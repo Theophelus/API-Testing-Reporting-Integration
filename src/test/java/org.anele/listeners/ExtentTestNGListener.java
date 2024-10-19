@@ -35,7 +35,9 @@ public class ExtentTestNGListener implements ITestListener {
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
         String log = "The test " + method_name + " was executed successfully";
-        test.log(Status.INFO, log);
+        test.log(Status.PASS, log);
+        //get method to log request and response information
+        log_request_specifications_and_response_details(result);
     }
 
     @Override
@@ -47,6 +49,9 @@ public class ExtentTestNGListener implements ITestListener {
         //get test attributes
         String log = "The test " + method_name + " failed" + result.getThrowable();
         test.log(Status.FAIL, log);
+
+        //get method to log request and response information
+        log_request_specifications_and_response_details(result);
     }
 
     @Override
