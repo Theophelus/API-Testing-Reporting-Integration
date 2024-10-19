@@ -39,23 +39,6 @@ public class ProductsTests {
 
     @BeforeSuite
     public synchronized void setup() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String file_date = format.format(new Date());
-
-        //create report name using current date
-        String file_name = "products_report_'" + file_date + "'" + ".html";
-        File dir = new File("reports/");
-        if (!dir.exists()) dir.mkdirs();
-
-        //create a full path of the report file
-        String get_path = Paths.get(dir.getAbsolutePath(), file_name).toString();
-        //create ExtentSparkReport object to generate html report
-        ExtentSparkReporter reporter = new ExtentSparkReporter(get_path);
-        //initialize extent report object
-        extent = new ExtentReports();
-
-        //attach report
-        extent.attachReporter(reporter);
         //calling the base setup method, that initialize common functionality
         this.baseCore.setup();
     }
