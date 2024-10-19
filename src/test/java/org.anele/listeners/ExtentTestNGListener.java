@@ -17,5 +17,15 @@ public class ExtentTestNGListener implements ITestListener {
         extent = ExtentManager.getReport();
     }
 
+    @Override
+    public void onTestStart(ITestResult result) {
+        //get current method name
+        String method_name = result.getMethod().getMethodName();
+        //define extentTest object for current test executed
+        ExtentTest test = extent.createTest(method_name, result.getMethod().getDescription());
+        //set test as an attribute, to be accessible by other methods in the listener
+        result.setAttribute(method_name + "-extent_test", test);
+    }
+
 
 }
