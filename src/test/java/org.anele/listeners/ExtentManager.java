@@ -18,7 +18,7 @@ public class ExtentManager {
     public synchronized static ExtentReports getReport() {
         if (extent == null) {
             //get current timestamps
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmdd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String current_date = format.format(new Date());
 
             //create report name using current date
