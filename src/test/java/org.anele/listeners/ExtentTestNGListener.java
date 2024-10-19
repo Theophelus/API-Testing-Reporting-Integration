@@ -20,7 +20,7 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         //get current method name
-        String method_name = result.getMethod().getMethodName();
+        String method_name = get_method_name(result);
         //define extentTest object for current test executed
         ExtentTest test = extent.createTest(method_name, result.getMethod().getDescription());
         //set test as an attribute, to be accessible by other methods in the listener
@@ -30,7 +30,7 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         //get current method name
-        String method_name = result.getMethod().getMethodName();
+        String method_name = get_method_name(result);
         //define extentTest object for current test executed results
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
@@ -41,7 +41,7 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         //get current method name
-        String method_name = result.getMethod().getMethodName();
+        String method_name = get_method_name(result);
         //define extentTest object for current test executed results
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
@@ -52,7 +52,7 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         //get current method name
-        String method_name = result.getMethod().getMethodName();
+        String method_name = get_method_name(result);
         //define extentTest object for current test executed results
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
@@ -63,5 +63,10 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onFinish(ITestContext context) {
         ExtentManager.flushExtentReport();
+    }
+
+    //String method to get current method name from ITestResults to reuse across overloaded methods
+    public String get_method_name(ITestResult result) {
+        return result.getMethod().getMethodName();
     }
 }
