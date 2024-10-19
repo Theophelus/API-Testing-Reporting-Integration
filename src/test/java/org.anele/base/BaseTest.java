@@ -81,6 +81,14 @@ public class BaseTest {
         result.setAttribute(method_name + " Request_spec ", queryableRequestSpecification);
     }
 
+    public void responseLogDetails(Response http_response) {
+        //define ITestResults to get test information
+        ITestResult result = Reporter.getCurrentTestResult();
+        String method_name = getMethodName(result);
+
+        result.setAttribute(method_name + " Request ", http_response);
+    }
+
     //get current executing method name.
     public String getMethodName(ITestResult result) {
         return result.getMethod().getMethodName();
