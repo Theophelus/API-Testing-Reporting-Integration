@@ -2,6 +2,7 @@ package org.anele.tests;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.restassured.response.Response;
 import org.anele.base.BaseTest;
@@ -68,6 +69,8 @@ public class ProductsTests {
     //create a method to build the response
     @Test
     public void getAllProducts() {
+        //test object to log out details about this test
+        ExtentTest test = extent.createTest("GET_all_product", "This test is to get all products in the api");
         //get the get all products operation
         Response httpResponse = baseCore.getOperation();
         //check status code of the response, if not 200. fail the test
@@ -78,6 +81,29 @@ public class ProductsTests {
         int expected_results = 30;
         Assert.assertEquals(actual_results, expected_results, "provide values do not match");
 
+        //log basic test info
+        test.log(Status.INFO, "GET request is executed successfully");
+    }
+
+    @Test
+    @Ignore
+    public void getASingleTest() {
+        int current_id = 1;
+        Products productList =
+                given()
+                        .header("Content-Type", "application/json")
+                        .pathParam("id", current_id)
+                        .when()
+                        .get("/{id}")
+                        .then().statusCode(HttpStatus.SC_OK)
+                        .assertThat().extract().response().as(Products.class);
+
+        List<Product> products = productList.products;
+        Product product = products.stream()
+                .filter(p -> p.id == current_id)
+                .findFirst().orElse(null);
+
+        System.out.println("filtered product: " + product);
     }
 
 
