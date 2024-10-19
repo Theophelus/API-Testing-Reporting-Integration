@@ -42,23 +42,24 @@ public class BaseTest {
     }
 
     public Response getOperation() {
-        //set request
-        RequestSpecification httpRequest = getRequestSpec().relaxedHTTPSValidation();
+        // Set request
+        getRequestSpec().relaxedHTTPSValidation();
 
+        RequestSpecification http_request = RestAssured.given();
+        //GET request information
+        specificationRequestLogDetails(http_request);
         try {
-            //get response
-            return RestAssured
-                    .given()
-                    .log().all()
-                    .spec(httpRequest)
-                    .when()
-                    .get();
-
+            // Get response
+            Response http_response = http_request.when().get();
+            //GET response information
+            responseLogDetails(http_response);
+            return http_response;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Fail to get request", e);
+            throw new RuntimeException("Failed to execute GET request to endpoint: ", e);
         }
     }
+
 
     /*
     specificationRequestLogDetails method take RequestSpecification object as an argument,
@@ -78,7 +79,7 @@ public class BaseTest {
         //get method name
         String method_name = getMethodName(result);
         //set results for other method
-        result.setAttribute(method_name + " Request_spec ", queryableRequestSpecification);
+        result.setAttribute(method_name + "-request_spec", queryableRequestSpecification);
     }
 
     public void responseLogDetails(Response http_response) {
@@ -90,7 +91,7 @@ public class BaseTest {
         ITestResult result = Reporter.getCurrentTestResult();
         String method_name = getMethodName(result);
 
-        result.setAttribute(method_name + " Response ", http_response);
+        result.setAttribute(method_name + "-response", http_response);
     }
 
     //get current executing method name.
