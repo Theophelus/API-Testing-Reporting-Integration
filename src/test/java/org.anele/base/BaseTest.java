@@ -82,11 +82,15 @@ public class BaseTest {
     }
 
     public void responseLogDetails(Response http_response) {
+        //check if null request spec
+        if (http_response == null)
+            throw new IllegalArgumentException("Response needs an argument/ can not be null");
+
         //define ITestResults to get test information
         ITestResult result = Reporter.getCurrentTestResult();
         String method_name = getMethodName(result);
 
-        result.setAttribute(method_name + " Request ", http_response);
+        result.setAttribute(method_name + " Response ", http_response);
     }
 
     //get current executing method name.
