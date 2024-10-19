@@ -27,5 +27,41 @@ public class ExtentTestNGListener implements ITestListener {
         result.setAttribute(method_name + "-extent_test", test);
     }
 
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        //get current method name
+        String method_name = result.getMethod().getMethodName();
+        //define extentTest object for current test executed results
+        ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
+        //get test attributes
+        String log = "The test " + method_name + " was executed successfully";
+        test.log(Status.INFO, log);
+    }
 
+    @Override
+    public void onTestFailure(ITestResult result) {
+        //get current method name
+        String method_name = result.getMethod().getMethodName();
+        //define extentTest object for current test executed results
+        ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
+        //get test attributes
+        String log = "The test " + method_name + " failed" + result.getThrowable();
+        test.log(Status.FAIL, log);
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        //get current method name
+        String method_name = result.getMethod().getMethodName();
+        //define extentTest object for current test executed results
+        ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
+        //get test attributes
+        String log = "The test " + method_name + " was skipped";
+        test.log(Status.SKIP, log);
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        ExtentManager.flushExtentReport();
+    }
 }
