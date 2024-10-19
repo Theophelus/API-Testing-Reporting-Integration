@@ -59,8 +59,13 @@ public class ProductsTests {
         this.baseCore.setup();
     }
 
+    @AfterSuite
+    public void tearDown() {
+        //this will ensure the report is created
+        extent.flush();
+    }
 
-    //a method to build the response
+    //create a method to build the response
     @Test
     public void getAllProducts() {
         //get the get all products operation
