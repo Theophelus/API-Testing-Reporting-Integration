@@ -38,4 +38,11 @@ public class ExtentManager {
 
         return extent;
     }
+
+    //flush report after each execution
+    public synchronized static void flushExtentReport() {
+        if (extent != null) {
+            extent.flush();
+        }
+    }
 }
