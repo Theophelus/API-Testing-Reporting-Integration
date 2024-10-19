@@ -69,4 +69,28 @@ public class ExtentTestNGListener implements ITestListener {
     public String get_method_name(ITestResult result) {
         return result.getMethod().getMethodName();
     }
+
+    void log_request_specifications_and_response_details(ITestResult result) {
+        String method_name = result.getMethod().getMethodName();
+        ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
+
+        QueryableRequestSpecification http_request = (QueryableRequestSpecification) result.getAttribute(method_name + "-request_spec");
+
+        if (http_request != null) {
+            test.log(Status.INFO, "Endpoint is: " + http_request.getURI());
+            test.log(Status.INFO, "Request body is: " + http_request.getBody());
+        } else {
+            test.log(Status.WARNING, "No request information available for this test.");
+        }
+
+        Response http_response = (Response) result.getAttribute(method_name + "-response");
+
+        if (http_response != null) {
+            test.log(Status.INFO, "Http Status is: " + http_response.statusCode());
+        } else {
+            test.log(Status.WARNING, "No response information available for this test.");
+        }
+    }
+
+
 }
