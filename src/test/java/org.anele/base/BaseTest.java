@@ -88,7 +88,7 @@ public class BaseTest {
         Response http_response =
                 specification
                         .when()
-                        .get("/{productId}");
+                        .get("/{product_id}");
         //get response information
         responseLogDetails(http_response);
         //GET response
