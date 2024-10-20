@@ -3,6 +3,12 @@ package org.anele.listeners;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.CodeLanguage;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
+import io.restassured.http.Header;
+import io.restassured.response.Response;
+import io.restassured.specification.QueryableRequestSpecification;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -35,7 +41,9 @@ public class ExtentTestNGListener implements ITestListener {
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
         String log = "The test " + method_name + " was executed successfully";
-        test.log(Status.PASS, log);
+        //use Markup Helper class to mark passed tests green
+        test.pass(MarkupHelper.createLabel(log, ExtentColor.GREEN));
+//        test.log(Status.PASS, log);
         //get method to log request and response information
         log_request_specifications_and_response_details(result);
     }
@@ -48,7 +56,9 @@ public class ExtentTestNGListener implements ITestListener {
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
         String log = "The test " + method_name + " failed" + result.getThrowable();
-        test.log(Status.FAIL, log);
+
+        test.fail(MarkupHelper.createLabel(log, ExtentColor.RED));
+        test.fail(MarkupHelper.createLabel(result.getThrowable().fillInStackTrace().getMessage(), ExtentColor.RED));
 
         //get method to log request and response information
         log_request_specifications_and_response_details(result);
@@ -62,7 +72,8 @@ public class ExtentTestNGListener implements ITestListener {
         ExtentTest test = (ExtentTest) result.getAttribute(method_name + "-extent_test");
         //get test attributes
         String log = "The test " + method_name + " was skipped";
-        test.log(Status.SKIP, log);
+
+        test.skip(MarkupHelper.createLabel(log, ExtentColor.YELLOW));
     }
 
     @Override
@@ -83,7 +94,9 @@ public class ExtentTestNGListener implements ITestListener {
 
         if (http_request != null) {
             test.log(Status.INFO, "Endpoint is: " + http_request.getURI());
-            test.log(Status.INFO, "Request body is: " + http_request.getBody());
+            if (http_request.getBody() != null) {
+                test.info(MarkupHelper.createCodeBlock(http_request.getBody(), CodeLanguage.JSON));
+            }
         } else {
             test.log(Status.WARNING, "No request information available for this test.");
         }
@@ -92,6 +105,10 @@ public class ExtentTestNGListener implements ITestListener {
 
         if (http_response != null) {
             test.log(Status.INFO, "Http Status is: " + http_response.statusCode());
+
+            if (http_response.getBody() != null) {
+                test.info(MarkupHelper.createCodeBlock(http_response.getBody().prettyPrint(), CodeLanguage.JSON));
+            }
         } else {
             test.log(Status.WARNING, "No response information available for this test.");
         }
