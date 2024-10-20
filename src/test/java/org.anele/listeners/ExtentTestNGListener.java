@@ -30,7 +30,9 @@ public class ExtentTestNGListener implements ITestListener {
         //get current method name
         String method_name = get_method_name(result);
         //define extentTest object for current test executed
-        ExtentTest test = extent.createTest(method_name, result.getMethod().getDescription());
+        ExtentTest test = extent.createTest(method_name,
+                        result.getMethod().getDescription()).assignAuthor("Anele Theophelus Tom")
+                .assignCategory("Product Reporting API");
         //set test as an attribute, to be accessible by other methods in the listener
         result.setAttribute(method_name + "-extent_test", test);
     }
