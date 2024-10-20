@@ -11,6 +11,8 @@ import org.anele.utils.PropertyFileManager;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
+import java.util.Map;
+
 public class BaseTest {
 
     protected PropertyFileManager propertyFileManager;
@@ -35,7 +37,6 @@ public class BaseTest {
 
 
     public RequestSpecification getRequestSpec() {
-
         return new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .build();
@@ -59,7 +60,40 @@ public class BaseTest {
             throw new RuntimeException("Failed to execute GET request to endpoint: ", e);
         }
     }
+    /*
+    Method overload that take three arguments RequestSpecifications, path_params, and current_id
+    to filter specific product
+     */
 
+    public Response getOperation(Map<String, Integer> path_params) {
+
+        //set request
+        RequestSpecification http_request = getRequestSpec().relaxedHTTPSValidation();
+        RequestSpecification specification = null;
+        //check if path params is not empty and contains a specific key
+        if (!path_params.isEmpty() && path_params.containsKey("product_id")) {
+            //make a request, after conditions met
+            specification = RestAssured
+                    .given()
+                    .pathParams(path_params)
+                    .spec(http_request);
+
+            //get http request specification information
+            specificationRequestLogDetails(specification);
+        }
+
+        assert specification != null;
+
+        //perform GET request and store response
+        Response http_response =
+                specification
+                        .when()
+                        .get("/{productId}");
+        //get response information
+        responseLogDetails(http_response);
+        //GET response
+        return http_response;
+    }
 
     /*
     specificationRequestLogDetails method take RequestSpecification object as an argument,
