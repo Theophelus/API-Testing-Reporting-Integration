@@ -15,25 +15,28 @@ import org.testng.Assert;
 
 import org.testng.annotations.*;
 
+import javax.imageio.plugins.tiff.BaselineTIFFTagSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 @Listeners(ExtentTestNGListener.class)
 public class ProductsTests {
 
-    protected BaseTest baseCore;
+    protected BaseTest baseTest;
     protected static PropertyFileManager PROPERTY_FILE_MANAGER;
 
     public ProductsTests() {
-        this.baseCore = new BaseTest();
+        this.baseTest = new BaseTest();
         PROPERTY_FILE_MANAGER = new PropertyFileManager();
     }
 
     @BeforeSuite
     public synchronized void setup() {
         //calling the base setup method, that initialize common functionality
-        this.baseCore.setup();
+        this.baseTest.setup();
     }
 
     @AfterSuite
@@ -45,8 +48,8 @@ public class ProductsTests {
     //create a method to build the response
     @Test
     public void testGETAllProducts() {
-        //get the get all products operation
-        Response httpResponse = baseCore.getOperation();
+        //get the ge all products operation
+        Response httpResponse = baseTest.getOperation();
         //check status code of the response, if not 200. fail the test
         if (httpResponse.statusCode() != HttpStatus.SC_OK)
             Assert.assertEquals(httpResponse.statusCode(), HttpStatus.SC_OK, "Request failed: " + httpResponse.statusCode());
@@ -58,24 +61,17 @@ public class ProductsTests {
     }
 
     @Test
-    @Ignore
-    public void getASingleTest() {
-        int current_id = 1;
-        Products productList =
-                given()
-                        .header("Content-Type", "application/json")
-                        .pathParam("id", current_id)
-                        .when()
-                        .get("/{id}")
-                        .then().statusCode(HttpStatus.SC_OK)
-                        .assertThat().extract().response().as(Products.class);
+    public void testGETASingleProduct() {
+        Map<String, Integer> params = new HashMap<>();
+        //Id for product to be retrieved
+        int product_id = 1;
+        params.put("product_id", product_id);
 
-        List<Product> products = productList.products;
-        Product product = products.stream()
-                .filter(p -> p.id == current_id)
-                .findFirst().orElse(null);
+        //Get Current Product based on provided product Id
+        Product product = baseTest.getOperation(params).thenReturn().as(Product.class);
+        //asset that product Id matches expected value
+        Assert.assertEquals(product.id, 1, "Product Id's do not match");
 
-        System.out.println("filtered product: " + product);
     }
 
 
