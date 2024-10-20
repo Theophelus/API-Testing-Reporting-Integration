@@ -13,6 +13,8 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.util.List;
+
 public class ExtentTestNGListener implements ITestListener {
 
     protected static ExtentReports extent;
@@ -105,6 +107,17 @@ public class ExtentTestNGListener implements ITestListener {
 
         if (http_response != null) {
             test.log(Status.INFO, "Http Status is: " + http_response.statusCode());
+            //format header data into tables
+            List<Header> list_of_headers = http_response.getHeaders().asList();
+            String[][] headers = new String[list_of_headers.size()][2];
+
+            for (int i = 0; i < list_of_headers.size(); i++) {
+
+                headers[i][0] = list_of_headers.get(i).getName();
+                headers[i][1] = list_of_headers.get(i).getValue();
+
+            }
+            test.info(MarkupHelper.createTable(headers));
 
             if (http_response.getBody() != null) {
                 test.info(MarkupHelper.createCodeBlock(http_response.getBody().prettyPrint(), CodeLanguage.JSON));
