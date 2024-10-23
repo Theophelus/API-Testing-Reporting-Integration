@@ -63,5 +63,32 @@ public class ProductsTests extends BaseTest {
 
     }
 
+    @Test
+    public void testGETReturnPolicyForAppleAirPodsMaxSilver() {
+        //Query params value
+        String phone = "phones";
+        //define a map to store query params
+        Map<String, String> query_params = new HashMap<>();
+        query_params.put("q", phone);
+        //GET response, with query params and path params
+        Response http_response = baseTest.getOperation(query_params, ApiPaths.SEARCH);
+        //deserialize response into products
+        List<Product> products =
+                http_response.jsonPath().getList("products", Product.class);
+
+        //assertFalse if product is empty
+        Assert.assertFalse(products.isEmpty(), "List of products is empty");
+
+        //loop through the list, and filter by product name, then assert correct return policy
+        for (Product product : products) {
+            if (product.title.equalsIgnoreCase("Apple AirPods Max Silver")) {
+                //String get return policy
+                String return_policy = product.returnPolicy;
+                Assert.assertEquals(return_policy, "90 days return policy",
+                        "Return policies do not match");
+                return;
+            }
+        }
+    }
 
 }
