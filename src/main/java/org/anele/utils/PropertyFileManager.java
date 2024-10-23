@@ -15,7 +15,7 @@ public class PropertyFileManager {
     }
 
     public synchronized void loadProperties() {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream stream = new FileInputStream("src/main/resources/config.properties")) {
             if (stream == null) {
                 System.out.println("Sorry, unable to find config.properties");
                 return;
