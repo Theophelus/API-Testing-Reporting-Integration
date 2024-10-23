@@ -10,6 +10,7 @@ import io.restassured.specification.SpecificationQuerier;
 import org.anele.utils.PropertyFileManager;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.annotations.BeforeSuite;
 
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class BaseTest {
         this.propertyFileManager.loadProperties();
     }
 
+    @BeforeSuite
     public void setup() {
 
         String base_url = propertyFileManager.getBaseUrl();

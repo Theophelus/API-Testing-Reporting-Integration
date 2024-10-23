@@ -23,7 +23,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 @Listeners(ExtentTestNGListener.class)
-public class ProductsTests {
+public class ProductsTests extends BaseTest {
 
     protected BaseTest baseTest;
     protected static PropertyFileManager PROPERTY_FILE_MANAGER;
@@ -33,17 +33,6 @@ public class ProductsTests {
         PROPERTY_FILE_MANAGER = new PropertyFileManager();
     }
 
-    @BeforeSuite
-    public synchronized void setup() {
-        //calling the base setup method, that initialize common functionality
-        this.baseTest.setup();
-    }
-
-    @AfterSuite
-    public void tearDown() {
-        //this will ensure the report is created
-//        extent.flush();
-    }
 
     //create a method to build the response
     @Test
