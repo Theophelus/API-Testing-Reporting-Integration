@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.SpecificationQuerier;
+import org.anele.utils.ApiPaths;
 import org.anele.utils.PropertyFileManager;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -94,6 +95,31 @@ public class BaseTest {
         //get response information
         responseLogDetails(http_response);
         //GET response
+        return http_response;
+    }
+
+    public Response getOperation(Map<String, String> params, ApiPaths path) {
+        //relax ssl certificate if exists
+        var specification = getRequestSpec().relaxedHTTPSValidation();
+        RequestSpecification http_request = null;
+
+        if (!params.isEmpty()) {
+            http_request = RestAssured.given()
+                    .queryParams(params)
+                    .spec(specification);
+            //attach request information on specificationRequestLogDetails method
+            specificationRequestLogDetails(http_request);
+        }
+
+        //store response
+        assert http_request != null;
+        Response http_response = http_request
+                .when()
+                .get(path.toString());
+
+        //attach request information
+        responseLogDetails(http_response);
+        //return response
         return http_response;
     }
 
