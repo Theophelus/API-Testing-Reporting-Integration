@@ -8,7 +8,7 @@ import io.restassured.response.Response;
 import org.anele.base.BaseTest;
 import org.anele.listeners.ExtentTestNGListener;
 import org.anele.model.Product;
-import org.anele.model.Products;
+import org.anele.utils.ApiPaths;
 import org.anele.utils.PropertyFileManager;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
