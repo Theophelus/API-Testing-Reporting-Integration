@@ -68,11 +68,11 @@ public class ProductsTests extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testValidateJsonResponse")
     public void testGETASingleProduct() {
         Map<String, Integer> params = new HashMap<>();
         //Id for product to be retrieved
-        int product_id = 1;
+        int product_id = 2;
         params.put("product_id", product_id);
 
         //Get Current Product based on provided product Id
@@ -80,6 +80,27 @@ public class ProductsTests extends BaseTest {
         //asset that product Id matches expected value
         Assert.assertEquals(product.id, 1, "Product Id's do not match");
 
+    }
+
+    @Test
+    public void createPOSTProduct() {
+        //get list of product
+        Product product = JSON_MANAGER_UTIL.ready_products("create_product.json");
+        System.out.println("Product title: " + product.getTitle());
+        //create a post and store response
+        Response http_response = baseTest.postOperation(product, ApiPaths.ADD);
+        Assert.assertEquals(http_response.statusCode(), HttpStatus.SC_CREATED, "Expected status 201, but got: " + http_response.statusCode());
+        // make a get request to validate product title
+        Map<String, Integer> params = new HashMap<>();
+        //Id for product to be retrieved
+        int product_id = product.getId();
+        params.put("product_id", product_id);
+
+        Response product_name = baseTest.getOperation(params)
+                .then().extract().response();
+
+        Assert.assertEquals(product_name.jsonPath().get("title"), "NIVEA MEN Even Tone Face Creme Tin with Liquorice Extract, 150ml"
+                , "Product titles do not match...!");
     }
 
     @Test
