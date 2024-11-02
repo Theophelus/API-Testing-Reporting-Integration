@@ -2,7 +2,8 @@ package org.anele.utils;
 
 public enum ApiPaths {
 
-    SEARCH("/search");
+    SEARCH("/search"),
+    ADD("/add");
 
     private final String path;
 
