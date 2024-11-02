@@ -1,24 +1,23 @@
 package org.anele.tests;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import org.anele.base.BaseTest;
 import org.anele.listeners.ExtentTestNGListener;
 import org.anele.model.Product;
 import org.anele.utils.ApiPaths;
+import org.anele.utils.JsonManagerUtil;
 import org.anele.utils.PropertyFileManager;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 
 import org.testng.annotations.*;
 
-import javax.imageio.plugins.tiff.BaselineTIFFTagSet;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 
@@ -27,10 +26,30 @@ public class ProductsTests extends BaseTest {
 
     protected BaseTest baseTest;
     protected static PropertyFileManager PROPERTY_FILE_MANAGER;
+    protected static JsonManagerUtil JSON_MANAGER_UTIL;
 
     public ProductsTests() {
         this.baseTest = new BaseTest();
         PROPERTY_FILE_MANAGER = new PropertyFileManager();
+        JSON_MANAGER_UTIL = new JsonManagerUtil();
+    }
+
+    @Test
+    public void testValidateJsonResponse() {
+
+        File ready_json = JSON_MANAGER_UTIL.load_json_schema("product_json_schema.json");
+        Map<String, Integer> params = new HashMap<>();
+        //Id for product to be retrieved
+        int product_id = 1;
+        params.put("product_id", product_id);
+
+        //Get Current Product based on provided product Id
+         baseTest.getOperation(params)
+                .then()
+                .assertThat().statusCode(HttpStatus.SC_OK)
+                .body(JsonSchemaValidator.matchesJsonSchema(ready_json))
+                .extract().response();
+
     }
 
 
