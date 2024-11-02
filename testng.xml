@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="products-test">
+    <test verbose="2" name="API-Testing-Reporting-Integration">
+        <classes>
+            <class name="org.anele.tests.ProductsTests">
+                <methods>
+                    <include name="testValidateJsonResponse"/>
+                    <include name="testGETAllProducts"/>
+                    <include name="testGETASingleProduct"/>
+                    <include name="createPOSTProduct"/>
+                    <include name="testGETReturnPolicyForAppleAirPodsMaxSilver"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
