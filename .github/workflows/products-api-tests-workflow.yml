@@ -35,7 +35,9 @@ jobs:
         id: find-latest-report
         run: |
           #find latest extent report, sorted with current executed and assign results to latestReport
-          $latestReport = $(ls -t reports/* | head -n 1)
+          latestReport=$(ls -t reports/* | head -n 1)
+          # Debugging line to show the report in the logs
+          echo "Latest Report: $latestReport"
           echo "::set-output name=latestReport::$latestReport"
 
       # find latest extent report and upload its artifact
