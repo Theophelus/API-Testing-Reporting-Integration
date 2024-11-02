@@ -41,7 +41,7 @@ jobs:
       # find latest extent report and upload its artifact
       - name: upload latest extent report
         if: always()
-        uses: actions/upload-artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: latest-extent-report
           path: ${{steps.fine_report.outputs.latestReport}}
