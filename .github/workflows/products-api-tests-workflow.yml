@@ -33,9 +33,10 @@ jobs:
 
       - name: Find latest report
         id: find-latest-report
+        shell: pwsh
         run: |
           #find latest extent report, sorted with current executed and assign results to latestReport
-          latestReport=$(ls -t reports/* | head -n 1)
+          latestReport=$(ls -t reports/* | head -n1)
           # Debugging line to show the report in the logs
           echo "Latest Report: $latestReport"
           echo "::set-output name=latestReport::$latestReport"
