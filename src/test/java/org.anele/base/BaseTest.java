@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.SpecificationQuerier;
+import org.anele.model.Product;
 import org.anele.utils.ApiPaths;
 import org.anele.utils.PropertyFileManager;
 import org.testng.ITestResult;
@@ -121,6 +122,38 @@ public class BaseTest {
         responseLogDetails(http_response);
         //return response
         return http_response;
+    }
+
+    /*
+     * Define Http response  method that takes three parameters
+     * @param path to api endpoint for creating resources
+     * @param return http response from the server
+     */
+
+    public Response postOperation(Product product, ApiPaths path) {
+        RequestSpecification http_specifications = getRequestSpec().relaxedHTTPSValidation();
+        RequestSpecification http_request = null;
+
+        if (product != null && !product.toString().isEmpty()) {
+            http_request = RestAssured
+                    .given()
+                    .and()
+                    .body(product)
+                    .spec(http_specifications);
+            //attach request information on specificationRequestLogDetails method
+            specificationRequestLogDetails(http_request);
+        }
+
+        //post product, and store response
+        assert http_request != null;
+        Response http_response = http_request
+                .when()
+                .post(path.toString());
+        //attach response information using responseLogDetails method
+        responseLogDetails(http_response);
+
+        return http_response;
+
     }
 
     /*
