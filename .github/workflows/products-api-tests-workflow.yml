@@ -36,7 +36,7 @@ jobs:
         shell: pwsh
         run: |
           #find latest extent report, sorted with current executed and assign results to latestReport
-          latestReport=$(ls -t reports/* | head -n1)
+          latestReport=$(ls -t reports/* | head -n 1)
           # Debugging line to show the report in the logs
           echo "Latest Report: $latestReport"
           echo "::set-output name=latestReport::$latestReport"
@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: latest-extent-report
-          path: ${{steps.find-latest-report.outputs.latestReport}}
+          path: ${{ steps.find-latest-report.outputs.latestReport }}
 
         # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
