@@ -31,15 +31,14 @@ jobs:
       - name: Test Execution
         run: mvn -B -f pom.xml clean test
 
-      #      - name: Find latest report
-      #        id: find-latest-report
-      #        shell: pwsh
-      #        run: |
-      #          #find latest extent report, sorted with current executed and assign results to latestReport
-      #          latestReport=$(ls -t reports/* | head -n 1)
-      #          # Debugging line to show the report in the logs
-      #          echo "Latest Report: $latestReport"
-      #          echo "::set-output name=latestReport::$latestReport"
+      - name: Find latest report
+        id: find-latest-report
+        run: |
+          #find latest extent report, sorted with current executed and assign results to latestReport
+          latestReport=$(ls -t reports/* | head -n 1)
+          # Debugging line to show the report in the logs
+          echo "Latest Report: $latestReport"
+          echo "Latest_Report=$latestReport >> $GITHUB_ENV"
 
       # find latest extent report and upload its artifact
       - name: upload latest extent report
@@ -47,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: latest-extent-report
-          path: $(ls -t reports/*.html | head -n 1)
+          path: ${{ env.Latest_Report }}
 
         # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
