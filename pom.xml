@@ -12,6 +12,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <XmlFile>testng.xml</XmlFile>
     </properties>
 
     <dependencies>
@@ -62,9 +63,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <includes>
-                        <!--                        <include>**/*Runner.java</include>-->
-                    </includes>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${XmlFile}</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
                 <dependencies>
                     <dependency>
