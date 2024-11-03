@@ -18,11 +18,11 @@ public class ExtentManager {
     public synchronized static ExtentReports getReport() {
         if (extent == null) {
             //get current timestamps
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            String current_date = format.format(new Date());
+//            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmss");
+//            String current_date = format.format(new Date());
 
             //create report name using current date
-            String file_name = "products-report-'" + current_date + "'" + ".html";
+            String file_name = "products-report" +".html";
             File dir = new File("reports/");
             if (!dir.exists()) dir.mkdirs();
 
