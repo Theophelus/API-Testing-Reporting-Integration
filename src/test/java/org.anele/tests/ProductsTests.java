@@ -17,7 +17,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 
@@ -44,7 +43,7 @@ public class ProductsTests extends BaseTest {
         params.put("product_id", product_id);
 
         //Get Current Product based on provided product Id
-         baseTest.getOperation(params)
+        baseTest.getOperation(params)
                 .then()
                 .assertThat().statusCode(HttpStatus.SC_OK)
                 .body(JsonSchemaValidator.matchesJsonSchema(ready_json))
@@ -72,14 +71,13 @@ public class ProductsTests extends BaseTest {
     public void testGETASingleProduct() {
         Map<String, Integer> params = new HashMap<>();
         //Id for product to be retrieved
-        int product_id = 2;
+        int product_id = 1;
         params.put("product_id", product_id);
 
         //Get Current Product based on provided product Id
         Product product = baseTest.getOperation(params).thenReturn().as(Product.class);
         //asset that product Id matches expected value
         Assert.assertEquals(product.id, 1, "Product Id's do not match");
-
     }
 
     @Test
