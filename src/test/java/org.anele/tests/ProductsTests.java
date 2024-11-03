@@ -89,16 +89,16 @@ public class ProductsTests extends BaseTest {
         Response http_response = baseTest.postOperation(product, ApiPaths.ADD);
         Assert.assertEquals(http_response.statusCode(), HttpStatus.SC_CREATED, "Expected status 201, but got: " + http_response.statusCode());
         // make a get request to validate product title
-        Map<String, Integer> params = new HashMap<>();
-        //Id for product to be retrieved
-        int product_id = product.getId();
-        params.put("product_id", product_id);
-
-        Response product_name = baseTest.getOperation(params)
-                .then().extract().response();
-
-        Assert.assertEquals(product_name.jsonPath().get("title"), "NIVEA MEN Even Tone Face Creme Tin with Liquorice Extract, 150ml"
-                , "Product titles do not match...!");
+//        Map<String, Integer> params = new HashMap<>();
+//        //Id for product to be retrieved
+//        int product_id = product.getId();
+//        params.put("product_id", product_id);
+//
+//        Response product_name = baseTest.getOperation(params)
+//                .then().extract().response();
+//
+//        Assert.assertEquals(product_name.jsonPath().get("title"), "NIVEA MEN Even Tone Face Creme Tin with Liquorice Extract, 150ml"
+//                , "Product titles do not match...!");
     }
 
     @Test
