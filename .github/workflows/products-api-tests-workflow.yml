@@ -9,6 +9,13 @@
 name: Java CI with Maven for Products API Tests
 
 on:
+  workflow_dispatch:
+    inputs:
+      xmlFile:
+        description: 'Testng xml file to execute'
+        required: true
+        default: testng.xml
+
   push:
     branches: [ "main" ]
   pull_request:
@@ -22,14 +29,16 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+
       - name: Test Execution
-        run: mvn clean test -DXmlFile=testng.xml
+        run: mvn clean test -DXmlFile=${{ inputs.xmlFile }}
       #
       #      - name: Find latest report
       #        id: find-latest-report
