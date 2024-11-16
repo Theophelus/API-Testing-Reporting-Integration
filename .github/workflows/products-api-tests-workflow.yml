@@ -39,7 +39,7 @@ jobs:
 
       - name: Test Execution
         run: mvn clean test -DXmlFile=${{ inputs.xmlFile }}
-      #
+
       #      - name: Find latest report
       #        id: find-latest-report
       #        shell: pwsh
