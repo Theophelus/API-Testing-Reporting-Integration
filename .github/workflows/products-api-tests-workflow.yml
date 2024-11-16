@@ -37,6 +37,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: check current xml file passed
+        run: echo "xmlFile ${{inputs.xmlFile}}"
+
       - name: Test Execution
         run: mvn clean test -DXmlFile=${{ inputs.xmlFile }}
 
