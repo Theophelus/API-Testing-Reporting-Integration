@@ -14,7 +14,7 @@ on:
       xmlFile:
         description: 'Testng xml file to execute'
         required: true
-        default: testng.xml
+        default: src/test/resources/testng.xml
 
   push:
     branches: [ "main" ]
